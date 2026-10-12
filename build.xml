@@ -1,0 +1,242 @@
+<project name="Assignment0" default="run" basedir=".">
+
+    <!-- ===================================================================== -->
+    <!-- Project properties                                                    -->
+    <!-- ===================================================================== -->
+    <description>
+        This build file compiles, tests, and packages the application.
+        Key targets:
+        - clean: Deletes all generated files.
+        - check-all: Runs checkstyle on all source code.
+        - compile: Compiles the main application source.
+        - test: Runs JUnit tests.
+        - dist: Creates a single, executable JAR file.
+        - run: Runs the application from the compiled classes.
+        - run-jar: Runs the application from the packaged JAR.
+    </description>
+
+    <!-- Global build properties -->
+    <property name="app.java.version" value="17" description="Java version for source and target compilation"/>
+    <property name="main.class" value="Main" description="The main class to run"/>
+
+    <!-- Directory properties -->
+    <property name="lib.dir" value="${basedir}/lib"/>
+    <property name="lib.runtime.dir" value="${lib.dir}/runtime"/>
+    <property name="lib.test.dir" value="${lib.dir}/test"/>
+    <property name="lib.compile.dir" value="${lib.dir}/compile"/>
+    <property name="lib.checkstyle.dir" value="${lib.dir}/checkstyle"/>
+    <property name="src.dir" value="${basedir}/src"/>
+    <property name="test.dir" value="${basedir}/test"/>
+    <property name="output.dir" value="${basedir}/build"/>
+    <property name="output.test.dir" value="${output.dir}/test"/>
+    <property name="output.reports.dir" value="${output.dir}/test-reports"/>
+    <property name="output.production.dir" value="${output.dir}/production"/>
+    <property name="output.dist.dir" value="${output.dir}/dist"/>
+    <property name="checkstyle.config.dir" value="${basedir}/checkstyle"/>
+    <property name="checkstyle.config.biuoop" value="${checkstyle.config.dir}/biuoop.xml"/>
+    <property name="checkstyle.config.biuoop.test" value="${checkstyle.config.dir}/biuoop-test.xml"/>
+    <property name="junitreport.style.dir" value="${basedir}/ant"/>
+
+    <!-- JAR distribution properties -->
+    <property name="dist.jar" value="${output.dist.dir}/${ant.project.name}-all.jar"/>
+
+    <!-- ===================================================================== -->
+    <!-- Fileset definitions                                                   -->
+    <!-- ===================================================================== -->
+    <fileset id="lib.runtime.fileset" dir="${lib.runtime.dir}" includes="**/*.jar"/>
+    <fileset id="lib.test.fileset" dir="${lib.test.dir}" includes="**/*.jar"/>
+    <fileset id="lib.compile.fileset" dir="${lib.compile.dir}" includes="**/*.jar"/>
+    <fileset id="lib.checkstyle.fileset" dir="${lib.checkstyle.dir}" includes="**/*.jar"/>
+    <fileset id="src.fileset" dir="${src.dir}" includes="**/*.java"/>
+    <fileset id="test.fileset" dir="${test.dir}" includes="**/*.java"/>
+
+    <!-- ===================================================================== -->
+    <!-- Classpath definitions                                                 -->
+    <!-- ===================================================================== -->
+    <path id="lib.runtime.classpath">
+        <fileset refid="lib.runtime.fileset"/>
+    </path>
+
+    <path id="lib.test.classpath">
+        <path refid="lib.runtime.classpath"/>
+        <fileset refid="lib.test.fileset"/>
+    </path>
+
+    <path id="lib.compile.classpath">
+        <path refid="lib.test.classpath"/>
+        <fileset refid="lib.compile.fileset"/>
+    </path>
+
+    <path id="lib.checkstyle.classpath">
+        <fileset refid="lib.checkstyle.fileset"/>
+    </path>
+
+    <path id="output.production.classpath">
+        <pathelement location="${output.production.dir}"/>
+    </path>
+
+    <path id="output.test.classpath">
+        <path refid="output.production.classpath"/>
+        <pathelement location="${output.test.dir}"/>
+    </path>
+
+    <path id="checkstyle.src.path">
+        <fileset refid="src.fileset"/>
+    </path>
+
+    <path id="checkstyle.test.path">
+        <fileset refid="test.fileset"/>
+    </path>
+
+    <!-- ===================================================================== -->
+    <!-- Core Build Targets                                                    -->
+    <!-- ===================================================================== -->
+
+    <target name="init" description="Initialize build directory">
+        <mkdir dir="${output.dir}"/>
+    </target>
+
+    <target name="clean" description="Delete all build artifacts">
+        <delete dir="${output.dir}"/>
+    </target>
+
+    <!-- ===================================================================== -->
+    <!-- Checkstyle Targets                                                    -->
+    <!-- ===================================================================== -->
+
+    <taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties">
+        <classpath>
+            <path refid="lib.checkstyle.classpath"/>
+        </classpath>
+    </taskdef>
+
+    <target name="check" description="Run checkstyle on source code">
+        <checkstyle config="${checkstyle.config.biuoop}" failureProperty="checkstyle.failure" failOnViolation="true">
+            <path refid="checkstyle.src.path"/>
+            <formatter type="plain" usefile="false"/>
+        </checkstyle>
+    </target>
+
+    <target name="check-test" description="Run checkstyle on test source code">
+        <checkstyle config="${checkstyle.config.biuoop.test}" failureProperty="checkstyle.failure" failOnViolation="true">
+            <path refid="checkstyle.test.path"/>
+            <formatter type="plain" usefile="false"/>
+        </checkstyle>
+    </target>
+
+    <target name="check-all" depends="check, check-test" description="Run all checkstyle checks"/>
+
+    <!-- ===================================================================== -->
+    <!-- Compilation Targets                                                   -->
+    <!-- ===================================================================== -->
+
+    <target name="compile" depends="check, init" description="Compile the application source code">
+        <mkdir dir="${output.production.dir}"/>
+        <javac srcdir="${src.dir}"
+               destdir="${output.production.dir}"
+               includeAntRuntime="false"
+               release="${app.java.version}"
+               debug="on"
+               fork="true">
+            <classpath>
+                <path refid="lib.compile.classpath"/>
+            </classpath>
+        </javac>
+    </target>
+
+    <target name="compile-test" depends="check-test, compile" description="Compile the test source code">
+        <mkdir dir="${output.test.dir}"/>
+        <javac srcdir="${test.dir}"
+               destdir="${output.test.dir}"
+               includeAntRuntime="false"
+               release="${app.java.version}"
+               debug="on"
+               fork="true">
+            <classpath>
+                <path refid="lib.test.classpath"/>
+                <path refid="output.production.classpath"/>
+            </classpath>
+        </javac>
+    </target>
+
+    <!-- ===================================================================== -->
+    <!-- Packaging and Execution Targets                                       -->
+    <!-- ===================================================================== -->
+
+    <target name="dist" depends="compile" description="Create a distributable JAR file">
+        <jar destfile="${dist.jar}" basedir="${output.production.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="${main.class}"/>
+                <attribute name="Created-By" value="Ant with Java ${app.java.version}"/>
+                <attribute name="X-Compile-Target-JDK" value="${app.java.version}"/>
+            </manifest>
+            <zipgroupfileset refid="lib.runtime.fileset"/>
+        </jar>
+    </target>
+
+    <target name="run-jar" depends="dist" description="Run the application from the packaged JAR">
+        <condition property="version.mismatch">
+            <not>
+                <equals arg1="${ant.java.version}" arg2="${app.java.version}"/>
+            </not>
+        </condition>
+        <fail if="version.mismatch"
+              message="Error: Runtime Java version (${ant.java.version}) does not match required version (${app.java.version})"/>
+        <java jar="${dist.jar}" fork="true"/>
+    </target>
+
+    <target name="run" depends="compile" description="Run the application from compiled classes">
+        <condition property="version.mismatch">
+            <not>
+                <equals arg1="${ant.java.version}" arg2="${app.java.version}"/>
+            </not>
+        </condition>
+        <fail if="version.mismatch"
+              message="Error: Runtime Java version (${ant.java.version}) does not match required version (${app.java.version})"/>
+        <java classname="${main.class}" fork="true">
+            <classpath>
+                <path refid="lib.runtime.classpath"/>
+                <path refid="output.production.classpath"/>
+            </classpath>
+        </java>
+    </target>
+
+    <!-- ===================================================================== -->
+    <!-- Testing Target                                                        -->
+    <!-- ===================================================================== -->
+
+    <target name="test" depends="compile-test" description="Execute all tests and generate reports">
+        <condition property="version.mismatch">
+            <not>
+                <equals arg1="${ant.java.version}" arg2="${app.java.version}"/>
+            </not>
+        </condition>
+        <fail if="version.mismatch"
+              message="Error: Runtime Java version (${ant.java.version}) does not match required version (${app.java.version})"/>
+        <mkdir dir="${output.reports.dir}"/>
+        <junitlauncher>
+            <classpath>
+                <path refid="lib.test.classpath"/>
+                <path refid="output.test.classpath"/>
+            </classpath>
+            <testclasses outputdir="${output.reports.dir}">
+                <fileset dir="${output.test.dir}" includes="**/*.class"/>
+                <listener type="legacy-plain" sendsysout="true"/>
+                <listener type="legacy-xml" sendsysout="true" sendsyserr="true"/>
+                <fork>
+                    <sysproperty key="junit.jupiter.execution.timeout.default" value="10s"/>
+                    <sysproperty key="junit.jupiter.execution.timeout.thread.mode.default" value="SEPARATE_THREAD"/>
+                </fork>
+            </testclasses>
+        </junitlauncher>
+        <junitreport todir="${output.reports.dir}">
+            <fileset dir="${output.reports.dir}">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report format="noframes" styledir="${junitreport.style.dir}" todir="${output.reports.dir}/html">
+                <param name="PROJECT_NAME" expression="${ant.project.name}"/>
+            </report>
+        </junitreport>
+    </target>
+
+</project>
