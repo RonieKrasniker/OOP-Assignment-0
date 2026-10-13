@@ -1,8 +1,8 @@
 # Installing Java
-In this course we will be using Temurin Java Development Kit 17 LTS (JDK 17).
+In this course we will be using Temurin Java Development Kit 27 (JDK 27).
 
 > [!NOTE]
-> It is possible to use other releases of JDK 17 if you want to, installation process remains the same
+> It is possible to use other releases of JDK 27 if you want to, installation process remains the same
 
 For each OS there are two ways to install JDK:
 1. Installer, i.e. one click install
@@ -11,7 +11,7 @@ For each OS there are two ways to install JDK:
 2. Manual installation
 	- An archive containing portable installation files
 
-In order to download it, proceed to [Downloads page](https://adoptium.net/temurin/releases/?version=17) and choose the version that is suitable for you:
+In order to download it, proceed to [Downloads page](https://adoptium.net/temurin/releases/?version=27) and choose the version that is suitable for you:
 - Windows (x64 only)
 - macOS
 	- ARM
@@ -48,30 +48,32 @@ Second, and final step is to let our OS know where to look for the JDK when we w
 - If this didn't work, open control panel first and then search the same inside of it.
 - In the new window that opened click on "Environment variables"
 - In the new window that opened you will see two sections, user variables and system variables. While it is okay to use system variables for a global installation in some cases, for our purposes we are better off with user variables.
-- Click "New..." under user variables and fill "Variable name" to be `JAVA_HOME` and Variable value to be the path to the files we just unpacked, e.g. `C:\Users\myUser\.jdks\jdk-17`. Carefully check that there are no typos and then click "OK".
-- After creating our first environment variable, we no have to update the `PATH` variable.
+- Click "New..." under user variables and fill "Variable name" to be `JAVA_HOME` and Variable value to be the path to the files we just unpacked, e.g. `C:\Users\myUser\.jdks\jdk-27`. Carefully check that there are no typos and then click "OK".
+- After creating our first environment variable, we now have to update the `PATH` variable.
 - Scroll user variables until you find the variable named `PATH`, `Path` or `path`, click on it and then click "Edit..." under user variables
-- In the new window that opened click "New" and in the test field type the path to where the binaries (executables aka exe's) are.
+- In the new window that opened click "New" and enter `%JAVA_HOME%\bin`. Move this entry above older Java entries, and remove or update conflicting Java entries in your effective `PATH`.
 > [!TIP]
 > Binaries location
 > 
-> THE most common case is for binaries to be in the directory (folder) called `bin`, as is with JDK, so the final path to where the binaries are would be written as `C:\Users\myUser\.jdks\jdk-17\bin` 
+> THE most common case is for binaries to be in the directory (folder) called `bin`, as is with JDK, so the final path to where the binaries are would be written as `C:\Users\myUser\.jdks\jdk-27\bin`
 
 ### macOS and Linux
 
 - Depending on your terminal (`zsh`, `bash`, etc.) you'll have to edit the relevant profile file (`~/.zprofile`, `~/.bash_profile`, etc.)
 - Open the relevant file with a text editor and add the following lines to the end of it (create the file if it doesn't exist):
 ```bash
-export JAVA_HOME="/usr/local/jdk-17"
-export PATH="$PATH:/usr/local/jdk-17/bin"
+export JAVA_HOME="/usr/local/jdk-27"
+export PATH="$JAVA_HOME/bin:$PATH"
 ```
+
+Use the actual extracted JDK directory for `JAVA_HOME`; its name may include a patch or build number. On macOS, use the `Contents/Home` directory inside the extracted JDK bundle (for example, `/usr/local/jdk-27.jdk/Contents/Home`).
 
 ### Finishing the installation and testing
 After you've updated the environment variables, re-login (this can be skipped for Windows) and open a new terminal window to test your installation
 - Windows
-    - Search -> "cmd" -> `java --version` should print the version you installed (Java 17)
+    - Search -> "cmd" -> `java --version` and `javac --version` should both print the version you installed (Java 27)
 - macOS and Linux
-    - Open terminal -> `java --version` should print the version you installed (Java 17)
+    - Open terminal -> `java --version` and `javac --version` should both print the version you installed (Java 27)
 > [!TIP]
 > Troubleshooting
 > 
@@ -163,9 +165,9 @@ This tool uses an XML-based build file to define the list of user-defined comman
 
 For example, one could define target `ant compile` that would gather all source code from directory `src/` and compile it, sending output to directory `build/`. And target `ant run` that would run that compiled code.
 ## Installation
-As mentioned earlier, we will install Ant manually, the same way we did with JDK 17.
+As mentioned earlier, we will install Ant manually, the same way we did with JDK 27.
 
-First, download the archive (`zip` is fine, choose other if you know why) from the [Downloads page](https://ant.apache.org/bindownload.cgi). It is best to download the latest release, at the moment of writing this tutorial the latest version is `Apache Ant 1.10.15`
+First, download the archive (`zip` is fine, choose other if you know why) from the [Downloads page](https://ant.apache.org/bindownload.cgi). Use Apache Ant 1.10.18, which was verified with Temurin JDK 27 on Linux for this assignment.
 
 Second, repeat the steps from [JDK manual installation](#manual-installation) with rather small changes:
 - Instead of `JAVA_HOME`, we will set the environment variable `ANT_HOME`

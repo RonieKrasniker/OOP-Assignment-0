@@ -9,12 +9,12 @@ import static org.junit.jupiter.api.Assertions.*;
  * © 2025
  */
 class MainTest {
-    private static final int REQUIRED_JAVA_VERSION = 17;
+    private static final int REQUIRED_JAVA_VERSION = 27;
 
     @Test
     void testJavaVersion() {
         assertEquals(REQUIRED_JAVA_VERSION, Runtime.version().feature(),
-                "JDK 17 is required, but running on " + System.getProperty("java.version"));
+                "JDK " + REQUIRED_JAVA_VERSION + " is required, but running on " + System.getProperty("java.version"));
     }
 
     @Test
