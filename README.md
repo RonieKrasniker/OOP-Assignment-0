@@ -1,6 +1,33 @@
 # Assignment 1: Points and Segments
 In this assignment you will implement Point and LineSegment classes, as well as interaction between them.
 
+## Getting Started
+### Requirements
+- **Java 27** (JDK). Check with `java --version`. The build refuses to run tests on any other version.
+- **Apache Ant**. Check with `ant -version`. On macOS: `brew install ant`.
+
+### Get the code
+```bash
+git clone -b assignment1 https://github.com/RonieKrasniker/OOP-Assignments.git
+cd OOP-Assignments
+```
+`-b assignment1` checks out this assignment's branch.
+
+### What you may change
+- Write all your code in the `src/` folder: implement `Point.java` and `LineSegment.java` and add any helper classes you need there.
+- **Do not change anything outside `src/`.** This includes `build.xml`, the `checkstyle/`, `lib/` and `test/` folders.
+
+### Build, test and run (from the project folder)
+| Command | What it does |
+|---|---|
+| `ant check` | Runs checkstyle on your code in `src/` |
+| `ant compile` | Runs checkstyle, then compiles `src/` |
+| `ant test` | Compiles everything and runs the provided JUnit tests |
+| `ant run` | Compiles and runs `Main` |
+| `ant clean` | Deletes the `build/` folder |
+
+Test reports are written to `build/test-reports/`.
+
 ## Part 1: Comparing `double`
 We know from the `Intro to Computers`course, that floating point numbers have a certain precision limit when stored in the computer memory.
 For that reason we should be careful when comparing two `double` values, and should probably employ some simple comparison algorithm.
@@ -190,3 +217,21 @@ Add the following methods to classes `Point` and `LineSegment`:
 
 > [!IMPORTANT]
 > Note that classes `Point` and `LineSegment` will be used in other assignments!
+
+## Submission
+Implement the following classes:
+- `Point` (`src/Point.java`)
+- `LineSegment` (`src/LineSegment.java`)
+
+Submit a single **zip file** containing all the `.java` files in your `src` folder:
+- The provided files (`Main.java`, `GeometryGenerator.java`, `GeometryRecord.java`, `GeometryRenderer.java`)
+- `Point.java` and `LineSegment.java`
+- Any helper classes you created (for example, a class for comparing `double` values)
+
+The `.java` files must be at the top level of the zip, not inside a folder. To create it, run from the project folder:
+```bash
+cd src && zip ../submission.zip *.java
+```
+
+> [!WARNING]
+> Make sure your code compiles, passes checkstyle and passes the tests (`ant test`) before submitting.
