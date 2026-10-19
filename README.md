@@ -3,8 +3,8 @@ In this assignment you will implement Point and LineSegment classes, as well as 
 
 ## Getting Started
 ### Requirements
-- **Java 27** (JDK). Check with `java --version`. The build refuses to run tests on any other version.
-- **Apache Ant**. Check with `ant -version`. On macOS: `brew install ant`.
+- **Java 27** (JDK). Check with `java --version`. 
+- **Apache Ant**. Check with `ant -version`. 
 
 ### Get the code
 ```bash
