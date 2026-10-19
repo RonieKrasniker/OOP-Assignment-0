@@ -60,3 +60,12 @@ The build setup, checkstyle configuration and Installation Guide are taken from 
 [Cub11k-BIU/OOP](https://github.com/Cub11k-BIU/OOP) course repository and
 [wiki](https://github.com/Cub11k-BIU/OOP/wiki/Installation-Guide), licensed under
 the Apache License 2.0 (see [LICENSE](LICENSE) and [NOTICE](NOTICE)).
+
+## Checkstyle instructions
+
+This assignment's build configuration automatically runs Checkstyle when building
+and running the project with Ant. You should also know how to run Checkstyle
+manually and use it in your IDE.
+
+Follow the [Coding Style and Checkstyle guide](docs/CodingStyle.md) for manual
+commands, a practice exercise, and IntelliJ setup using the bundled Checkstyle 12.0.1.
