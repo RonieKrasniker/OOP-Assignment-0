@@ -18,15 +18,30 @@ cd OOP-Assignments
 - **Do not change anything outside `src/`.** This includes `build.xml`, the `checkstyle/`, `lib/` and `test/` folders.
 
 ### Build, test and run (from the project folder)
-| Command | What it does |
-|---|---|
-| `ant check` | Runs checkstyle on your code in `src/` |
-| `ant compile` | Runs checkstyle, then compiles `src/` |
-| `ant test` | Compiles everything and runs the provided JUnit tests |
-| `ant run` | Compiles and runs `Main` |
-| `ant clean` | Deletes the `build/` folder |
+Run checkstyle on your code in `src/`:
+```bash
+ant check
+```
 
-Test reports are written to `build/test-reports/`.
+Run checkstyle, then compile `src/`:
+```bash
+ant compile
+```
+
+Compile everything and run the provided JUnit tests:
+```bash
+ant test
+```
+
+Compile and run `Main`:
+```bash
+ant run
+```
+
+Delete the `build/` folder:
+```bash
+ant clean
+```
 
 ## Part 1: Comparing `double`
 We know from the `Intro to Computers`course, that floating point numbers have a certain precision limit when stored in the computer memory.
