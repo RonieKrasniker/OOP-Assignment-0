@@ -234,12 +234,12 @@ Implement the following classes:
 - `Point` (`src/Point.java`)
 - `LineSegment` (`src/LineSegment.java`)
 
-Submit a single **zip file** containing all the `.java` files in your `src` folder:
+Submit a single **zip file** containing the src directory with:
 - The provided files (`Main.java`, `GeometryGenerator.java`, `GeometryRecord.java`, `GeometryRenderer.java`)
 - `Point.java` and `LineSegment.java`
 - Any helper classes you created (for example, a class for comparing `double` values)
 
-The `.java` files must be at the top level of the zip, not inside a folder. To create it, run from the project folder:
+The src directory  must be at the top level of the zip. To create it, run from the project folder:
 ```bash
 zip Assignment1.zip src/*.java
 ```
