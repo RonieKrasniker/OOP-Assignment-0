@@ -241,7 +241,7 @@ Submit a single **zip file** containing all the `.java` files in your `src` fold
 
 The `.java` files must be at the top level of the zip, not inside a folder. To create it, run from the project folder:
 ```bash
-cd src && zip ../Assignment1.zip *.java
+zip Assignment1.zip src/*.java
 ```
 
 > [!WARNING]
