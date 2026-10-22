@@ -245,4 +245,4 @@ zip Assignment1.zip src/*.java
 ```
 
 > [!WARNING]
-> Make sure your code compiles, passes checkstyle and passes the tests (`ant test`) before submitting.
+> Make sure your code compiles and passes checkstyle. After submitting your code through the Submit system, verify that you receive a confirmation email stating that your submission passed the automated tests.
