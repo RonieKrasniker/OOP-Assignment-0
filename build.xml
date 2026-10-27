@@ -17,6 +17,7 @@
 
     <!-- Global build properties -->
     <property name="app.java.version" value="27" description="Java version for source and target compilation"/>
+    <property name="min.java.version" value="17" description="Minimum Java version to run the build"/>
     <property name="main.class" value="Main" description="The main class to run"/>
 
     <!-- Directory properties -->
@@ -177,22 +178,22 @@
     <target name="run-jar" depends="dist" description="Run the application from the packaged JAR">
         <condition property="version.mismatch">
             <not>
-                <equals arg1="${ant.java.version}" arg2="${app.java.version}"/>
+                <javaversion atleast="${min.java.version}"/>
             </not>
         </condition>
         <fail if="version.mismatch"
-              message="Error: Runtime Java version (${ant.java.version}) does not match required version (${app.java.version})"/>
+              message="Error: Runtime Java version (${ant.java.version}) is older than required version (${min.java.version})"/>
         <java jar="${dist.jar}" fork="true"/>
     </target>
 
     <target name="run" depends="compile" description="Run the application from compiled classes">
         <condition property="version.mismatch">
             <not>
-                <equals arg1="${ant.java.version}" arg2="${app.java.version}"/>
+                <javaversion atleast="${min.java.version}"/>
             </not>
         </condition>
         <fail if="version.mismatch"
-              message="Error: Runtime Java version (${ant.java.version}) does not match required version (${app.java.version})"/>
+              message="Error: Runtime Java version (${ant.java.version}) is older than required version (${min.java.version})"/>
         <java classname="${main.class}" fork="true">
             <classpath>
                 <path refid="lib.runtime.classpath"/>
@@ -208,11 +209,11 @@
     <target name="test" depends="compile-test" description="Execute all tests and generate reports">
         <condition property="version.mismatch">
             <not>
-                <equals arg1="${ant.java.version}" arg2="${app.java.version}"/>
+                <javaversion atleast="${min.java.version}"/>
             </not>
         </condition>
         <fail if="version.mismatch"
-              message="Error: Runtime Java version (${ant.java.version}) does not match required version (${app.java.version})"/>
+              message="Error: Runtime Java version (${ant.java.version}) is older than required version (${min.java.version})"/>
         <mkdir dir="${output.reports.dir}"/>
         <junitlauncher>
             <classpath>
