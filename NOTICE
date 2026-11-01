@@ -1,5 +1,0 @@
-This project contains material derived from https://github.com/Cub11k-BIU/OOP
-(build.xml, checkstyle/, ant/, lib/ and the Installation Guide in docs/),
-licensed under the Apache License, Version 2.0.
-Changes: project renamed to "Assignment0"; added src/Main.java, test/MainTest.java and README.md.
-Updated the build configuration and installation instructions to require JDK 27.
